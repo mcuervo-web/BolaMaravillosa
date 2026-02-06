@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body { margin: 0; background: #000; overflow: hidden; touch-action: none; }
+        canvas { display: block; transform: translateZ(0); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        
+        const colors = ['#FF0000', '#00FF00', '#0000FF'];
+        let colorIndex = 0;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function update() {
+            // Fondo negro
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Cuadrado fijo en el centro
+            ctx.fillStyle = colors[colorIndex];
+            ctx.fillRect(canvas.width / 2 - 40, canvas.height / 2 - 40, 80, 80);
+
+            // Alternar color
+            colorIndex = (colorIndex + 1) % colors.length;
+
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+        requestAnimationFrame(update);
+    </script>
+</body>
+</html>
