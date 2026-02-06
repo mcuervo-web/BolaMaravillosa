@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <title>Experimento RGB Puro</title>
     <style>
         body { margin: 0; background: #000; overflow: hidden; touch-action: none; }
         canvas { display: block; transform: translateZ(0); }
@@ -15,7 +16,6 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { alpha: false });
-        
         const colors = ['#FF0000', '#00FF00', '#0000FF'];
         let colorIndex = 0;
 
@@ -24,16 +24,39 @@
             canvas.height = window.innerHeight;
         }
 
+        // FUNCIÓN CLAVE: Solicita pantalla completa real al usuario
+        function activarPantallaCompleta() {
+            const doc = document.documentElement;
+            if (doc.requestFullscreen) {
+                doc.requestFullscreen();
+            } else if (doc.webkitRequestFullscreen) { /* Safari/Chrome antiguo */
+                doc.webkitRequestFullscreen();
+            } else if (doc.msRequestFullscreen) { /* IE11 */
+                doc.msRequestFullscreen();
+            }
+        }
+
         function update() {
-            // Fondo negro
             ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Cuadrado fijo en el centro
             ctx.fillStyle = colors[colorIndex];
-            ctx.fillRect(canvas.width / 2 - 40, canvas.height / 2 - 40, 80, 80);
+            // Dibujamos el cuadrado
+            ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
 
-            // Alternar color
+            colorIndex = (colorIndex + 1) % colors.length;
+            requestAnimationFrame(update);
+        }
+
+        // Escuchar el clic para activar la pantalla completa
+        window.addEventListener('click', activarPantallaCompleta);
+        window.addEventListener('resize', resize);
+        
+        resize();
+        requestAnimationFrame(update);
+    </script>
+</body>
+</html>
             colorIndex = (colorIndex + 1) % colors.length;
 
             requestAnimationFrame(update);
